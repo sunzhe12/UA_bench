@@ -2,8 +2,8 @@
 
 Project page for the paper **UA-Bench**, built with the [Academic Project Page Template](https://github.com/eliahuhorwitz/Academic-project-page-template) (adopted from the [Nerfies](https://nerfies.github.io/) page).
 
-- **Live page:** https://sunzhe12.github.io/UA_bench/
-- **Source repo:** https://github.com/sunzhe12/UA_bench
+- **Live page:** https://sunzhe12.github.io/ua-bench/
+- **Source repo:** https://github.com/sunzhe12/ua-bench
 
 ## Structure
 
@@ -41,27 +41,23 @@ Project page for the paper **UA-Bench**, built with the [Academic Project Page T
 - [ ] arXiv ID → uncomment the arXiv button in `index.html`
 - [ ] `static/images/favicon.ico` → your own favicon
 - [ ] Result figures → drop into `static/images/figure1~4.png`, uncomment the Results carousel
-- [ ] Confirm the teaser caption matches the figure
+- [ ] Teaser caption (removed for now — add one under the image if you want it)
 
 Optional blocks are commented out in `index.html` — uncomment to enable:
 video teaser, YouTube presentation, video carousel, poster PDF, dataset /
 supplementary buttons, and the "More Works" dropdown.
 
-## Enable GitHub Pages
+## GitHub Pages
 
-1. Push this repo to `main`.
-2. Repo → **Settings** → **Pages** → under *Build and deployment*, set
-   **Source = Deploy from a branch**.
-3. Branch: `main`, folder: `/ (root)` → **Save**.
-4. After a minute or two the page goes live at
-   https://sunzhe12.github.io/UA_bench/
+Already enabled — **Deploy from a branch → `main` → `/ (root)`**, HTTPS enforced.
 
-Every push to `main` redeploys automatically.
+- Live page: https://sunzhe12.github.io/ua-bench/
+- Every push to `main` redeploys automatically.
 
-> Note: the repo name contains uppercase letters (`UA_bench`). GitHub Pages
-> URLs are case-insensitive and will redirect, but the convention is to use a
-> lowercase repo name. If you rename the repo to `ua-bench`, update the URLs in
-> `index.html` (Open Graph, `citation_pdf_url`, structured data, BibTeX).
+To reconfigure: Settings → Pages → *Build and deployment* → Source.
+
+> The repo was renamed from `UA_bench` to `ua-bench` — lowercase is the
+> convention for Pages URLs. GitHub redirects the old address automatically.
 
 ## Tips
 
