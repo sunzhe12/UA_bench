@@ -7,20 +7,27 @@ Project page for the paper **UA-Bench**, built with the [Academic Project Page T
 
 ## Structure
 
+GitHub Pages is configured to publish **only `docs/`**, so code and data stay
+off the website.
+
 ```
 .
-├── index.html                  # 整个页面，所有内容都在这里改
-├── .nojekyll                   # 告诉 GitHub Pages 不要跑 Jekyll
-└── static
-    ├── css/                    # Bulma + FontAwesome + 主题样式
-    ├── js/                     # 轮播、复制按钮等交互
-    ├── images/
-    │   ├── teaser.jpg          # 首页主图（已放入论文 Figure 1）
-    │   ├── figure1~4.png       # 结果轮播图（占位，轮播当前已注释）
-    │   ├── social_preview.jpg  # 1200x630 社交分享预览图（由主图裁切）
-    │   └── favicon.ico         # 站点图标（占位）
-    ├── pdfs/paper.pdf          # 论文 PDF（占位）
-    └── videos/                 # 放演示视频，>10MB 建议传 B 站 / YouTube 后嵌入
+├── README.md                   # 本文件
+├── docs/                       # ← Pages 只发布这个目录
+│   ├── index.html              # 整个页面，所有内容都在这里改
+│   ├── .nojekyll               # 告诉 Pages 不要跑 Jekyll
+│   └── static/
+│       ├── css/                # Bulma + FontAwesome + 主题样式
+│       ├── js/                 # 轮播、复制按钮等交互
+│       ├── images/
+│       │   ├── teaser.jpg      # 首页主图（论文 Figure 1）
+│       │   ├── figure1~4.png   # 结果轮播图（占位，轮播当前已注释）
+│       │   ├── social_preview.jpg
+│       │   └── favicon.ico     # 站点图标（占位）
+│       ├── pdfs/paper.pdf      # 论文 PDF（占位）
+│       └── videos/             # 演示视频，>10MB 建议传 B 站 / YouTube
+├── src/                        # 代码放这里，不会被 Pages 发布
+└── data/                       # 数据集不进 git，见 data/README.md
 ```
 
 ## Fill in your content
@@ -32,29 +39,34 @@ Project page for the paper **UA-Bench**, built with the [Academic Project Page T
 - [x] Institution (Southeast University) and venue (Under Review)
 - [x] Abstract, verbatim from the manuscript
 - [x] BibTeX entry (`@misc`, key `sun2026uabench`)
-- [x] `static/images/teaser.jpg` — paper Figure 1, downscaled 11520x6480 → 2000x1125 (527 KB)
-- [x] `static/images/social_preview.jpg` — 1200x630, cropped from the teaser
+- [x] `docs/static/images/teaser.jpg` — paper Figure 1, downscaled 11520x6480 → 2000x1125 (527 KB)
+- [x] `docs/static/images/social_preview.jpg` — 1200x630, cropped from the teaser
 
 ### Remaining
 
-- [ ] `static/pdfs/paper.pdf` → replace the placeholder with the real paper
-- [ ] arXiv ID → uncomment the arXiv button in `index.html`
-- [ ] `static/images/favicon.ico` → your own favicon
-- [ ] Result figures → drop into `static/images/figure1~4.png`, uncomment the Results carousel
+- [ ] `docs/static/pdfs/paper.pdf` → replace the placeholder with the real paper
+- [ ] arXiv ID → uncomment the arXiv button in `docs/index.html`
+- [ ] `docs/static/images/favicon.ico` → your own favicon
+- [ ] Result figures → drop into `docs/static/images/figure1~4.png`, uncomment the Results carousel
 - [ ] Teaser caption (removed for now — add one under the image if you want it)
 
-Optional blocks are commented out in `index.html` — uncomment to enable:
+Optional blocks are commented out in `docs/index.html` — uncomment to enable:
 video teaser, YouTube presentation, video carousel, poster PDF, dataset /
 supplementary buttons, and the "More Works" dropdown.
 
 ## GitHub Pages
 
-Already enabled — **Deploy from a branch → `main` → `/ (root)`**, HTTPS enforced.
+Already enabled — **Deploy from a branch → `main` → `/docs`**, HTTPS enforced.
 
 - Live page: https://sunzhe12.github.io/ua-bench/
 - Every push to `main` redeploys automatically.
+- Only `docs/` is published, so anything under `src/` or `data/` never reaches
+  the website.
 
 To reconfigure: Settings → Pages → *Build and deployment* → Source.
+
+> If you ever move the page out of `docs/`, remember to update the Pages folder
+> too, otherwise the site goes 404.
 
 > The repo was renamed from `UA_bench` to `ua-bench` — lowercase is the
 > convention for Pages URLs. GitHub redirects the old address automatically.
