@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="UA-Bench: Benchmarking Large Audio-Language Models on Underwater Acoustic Recognition">
+  <meta name="description" content="UA-Bench is a synthetic benchmark of 375,051 underwater acoustic records that evaluates how far large audio-language models transfer into specialized domains.">
+  <meta name="keywords" content="underwater acoustics, large audio-language models, LALM, benchmark, audio recognition, multimodal evaluation, synthetic data">
+  <meta name="author" content="Zhe Sun, Liang An, Jiayu Yao, Ronglai Qian, Jianing Cai, Ziwei Huang, Qing Fan, Zhiyuan Yang, Yujun Cai, Hongli Cao, Yiwei Wang, Xiaoyan Wang">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Southeast University">
+  <meta property="og:title" content="UA-Bench: Benchmarking Large Audio-Language Models on Underwater Acoustic Recognition">
+  <meta property="og:description" content="UA-Bench is a synthetic benchmark of 375,051 underwater acoustic records that evaluates how far large audio-language models transfer into specialized domains.">
+  <meta property="og:url" content="https://sunzhe12.github.io/UA_bench/">
+  <meta property="og:image" content="https://sunzhe12.github.io/UA_bench/static/images/social_preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="UA-Bench - Research Preview">
+  <meta property="article:author" content="Zhe Sun">
+  <meta property="article:section" content="Research">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="UA-Bench: Benchmarking Large Audio-Language Models on Underwater Acoustic Recognition">
+  <meta name="twitter:description" content="UA-Bench is a synthetic benchmark of 375,051 underwater acoustic records that evaluates how far large audio-language models transfer into specialized domains.">
+  <meta name="twitter:image" content="https://sunzhe12.github.io/UA_bench/static/images/social_preview.jpg">
+  <meta name="twitter:image:alt" content="UA-Bench - Research Preview">
+
+  <!-- Academic / Google Scholar -->
+  <meta name="citation_title" content="UA-Bench: Benchmarking Large Audio-Language Models on Underwater Acoustic Recognition">
+  <meta name="citation_author" content="Sun, Zhe">
+  <meta name="citation_author" content="An, Liang">
+  <meta name="citation_author" content="Yao, Jiayu">
+  <meta name="citation_author" content="Qian, Ronglai">
+  <meta name="citation_author" content="Cai, Jianing">
+  <meta name="citation_author" content="Huang, Ziwei">
+  <meta name="citation_author" content="Fan, Qing">
+  <meta name="citation_author" content="Yang, Zhiyuan">
+  <meta name="citation_author" content="Cai, Yujun">
+  <meta name="citation_author" content="Cao, Hongli">
+  <meta name="citation_author" content="Wang, Yiwei">
+  <meta name="citation_author" content="Wang, Xiaoyan">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="Under Review">
+  <meta name="citation_pdf_url" content="https://sunzhe12.github.io/UA_bench/static/pdfs/paper.pdf">
+
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <title>UA-Bench: Benchmarking Large Audio-Language Models on Underwater Acoustic Recognition</title>
+
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <link rel="apple-touch-icon" href="static/images/favicon.ico">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+
+  <!-- Structured Data for Academic Papers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "UA-Bench: Benchmarking Large Audio-Language Models on Underwater Acoustic Recognition",
+    "description": "UA-Bench is a synthetic benchmark of 375,051 underwater acoustic records that evaluates how far large audio-language models transfer into specialized domains.",
+    "author": [
+      { "@type": "Person", "name": "Zhe Sun", "affiliation": { "@type": "Organization", "name": "Southeast University" } },
+      { "@type": "Person", "name": "Liang An", "affiliation": { "@type": "Organization", "name": "Southeast University" } },
+      { "@type": "Person", "name": "Jiayu Yao", "affiliation": { "@type": "Organization", "name": "Southeast University" } },
+      { "@type": "Person", "name": "Ronglai Qian", "affiliation": { "@type": "Organization", "name": "Southeast University" } },
+      { "@type": "Person", "name": "Jianing Cai", "affiliation": { "@type": "Organization", "name": "Southeast University" } },
+      { "@type": "Person", "name": "Ziwei Huang", "affiliation": { "@type": "Organization", "name": "Southeast University" } },
+      { "@type": "Person", "name": "Qing Fan", "affiliation": { "@type": "Organization", "name": "Southeast University" } },
+      { "@type": "Person", "name": "Zhiyuan Yang", "affiliation": { "@type": "Organization", "name": "Southeast University" } },
+      { "@type": "Person", "name": "Yujun Cai", "affiliation": { "@type": "Organization", "name": "Southeast University" } },
+      { "@type": "Person", "name": "Hongli Cao", "affiliation": { "@type": "Organization", "name": "Southeast University" } },
+      { "@type": "Person", "name": "Yiwei Wang", "affiliation": { "@type": "Organization", "name": "Southeast University" } },
+      { "@type": "Person", "name": "Xiaoyan Wang", "affiliation": { "@type": "Organization", "name": "Southeast University" } }
+    ],
+    "datePublished": "2026",
+    "url": "https://sunzhe12.github.io/UA_bench/",
+    "image": "https://sunzhe12.github.io/UA_bench/static/images/social_preview.jpg",
+    "isAccessibleForFree": true,
+    "license": "https://creativecommons.org/licenses/by/4.0/"
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <!-- 可选组件：实验室其他工作下拉菜单。若你有同组其他论文，取消下面这段注释并替换内容。 -->
+  <!--
+  <div class="more-works-container">
+    <button class="more-works-btn" onclick="toggleMoreWorks()" title="View More Works from Our Lab">
+      <i class="fas fa-flask"></i> More Works <i class="fas fa-chevron-down dropdown-arrow"></i>
+    </button>
+    <div class="more-works-dropdown" id="moreWorksDropdown">
+      <div class="dropdown-header">
+        <h4>More Works from Our Lab</h4>
+        <button class="close-btn" onclick="toggleMoreWorks()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="works-list">
+        <a href="https://arxiv.org/abs/PAPER_ID_1" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Paper Title 1</h5>
+            <p>Brief description of the work and its main contribution.</p>
+            <span class="work-venue">Conference/Journal 2026</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  -->
+
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">UA-Bench: Benchmarking Large Audio-Language Models on Underwater Acoustic Recognition</h1>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><a href="https://github.com/sunzhe12" target="_blank">Zhe Sun</a>,</span>
+              <span class="author-block">Liang An,</span>
+              <span class="author-block">Jiayu Yao,</span>
+              <span class="author-block">Ronglai Qian,</span>
+              <span class="author-block">Jianing Cai,</span>
+              <span class="author-block">Ziwei Huang,</span>
+              <span class="author-block">Qing Fan,</span>
+              <span class="author-block">Zhiyuan Yang,</span>
+              <span class="author-block">Yujun Cai,</span>
+              <span class="author-block">Hongli Cao,</span>
+              <span class="author-block">Yiwei Wang,</span>
+              <span class="author-block">Xiaoyan Wang<sup>&sect;</sup></span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Southeast University<br>Under Review</span>
+              <span class="eql-cntrb"><small><br><sup>&sect;</sup>Corresponding Author</small></span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- TODO(UA-Bench): 把论文 PDF 放到 static/pdfs/paper.pdf（现在是占位文件） -->
+                <span class="link-block">
+                  <a href="static/pdfs/paper.pdf" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <a href="https://github.com/sunzhe12/UA_bench" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                  </a>
+                </span>
+
+                <!-- arXiv 按钮：拿到 arXiv ID 后取消注释并替换
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                  </a>
+                </span>
+                -->
+
+                <!-- 可选：数据集 / 补充材料，需要时取消注释
+                <span class="link-block">
+                  <a href="https://DATASET_LINK" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-database"></i></span>
+                  <span>Dataset</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="static/pdfs/supplementary_material.pdf" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Supplementary</span>
+                  </a>
+                </span>
+                -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teaser -->
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <img src="static/images/teaser.jpg" alt="Overview of the UA-Bench construction pipeline" loading="lazy"/>
+        <!-- TODO(UA-Bench): 核对图注，确认与图中内容一致 -->
+        <h2 class="subtitle has-text-centered">
+          Overview of UA-Bench: parameterized source modeling coupled with modeled propagation produces
+          375,051 records, each with a three-level label hierarchy (13 leaf classes), a templated multi-turn
+          dialogue, and source and channel metadata.
+        </h2>
+      </div>
+    </div>
+  </section>
+  <!-- End teaser -->
+
+  <!-- 可选组件：teaser 视频。做好演示视频后，把上面的 <img> 整段换成下面这段
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <video poster="static/images/teaser.jpg" id="teaser" autoplay controls muted loop height="100%" preload="metadata">
+          <source src="static/videos/teaser.mp4" type="video/mp4">
+        </video>
+        <h2 class="subtitle has-text-centered">Caption for your teaser video.</h2>
+      </div>
+    </div>
+  </section>
+  -->
+
+  <!-- Paper abstract -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Large audio-language models (LALMs) are fast becoming a general interface to sound, yet how far their
+              broad pretraining carries into specialized domains remains largely open. Underwater acoustics is a case in
+              point. Vessel monitoring, maritime safety, and ocean sensing all depend on recognizing underwater signals,
+              but to our knowledge LALMs have not been systematically evaluated on them. Building a benchmark for this
+              setting is not straightforward. Annotated recordings are costly to collect, and a faithful synthetic alternative
+              has to bring together many interacting factors: the structure of detection pulses, communication waveforms,
+              and ship-radiated noise, and the sound-speed profile, geometry, and multipath propagation through which
+              each reaches the receiver. We address this with UA-Bench, a synthetic benchmark of 375,051 audio records
+              that couples parameterized sources with modeled propagation, so that every record can be traced to the
+              conditions that produced it. The records span these three signal families, and each carries a three-level label
+              hierarchy (13 leaf classes), a templated multi-turn dialogue, and source and channel metadata. We evaluate
+              on a balanced 2,600-record subset with a gated coarse-to-fine protocol that locates each error at source
+              routing, fine-grained classification, or output format, and add a paired silent-audio control to test whether
+              the waveform is actually used. Nine open LALMs, evaluated without task-specific adaptation, reach only
+              2.0%&ndash;13.1% leaf accuracy, against a random reference of 7.7%. The waveform helps source routing far
+              more than leaf recognition (for one model, +29.5 versus +2.3 points over silence), and just four models gain
+              reliably at the leaf level, by at most 4.7 points. UA-Bench thus gives a reference point for these models, and
+              its released training partition supports follow-up adaptation work.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End paper abstract -->
+
+  <!-- 可选组件：结果图轮播。有更多结果图时取消下面这段注释，替换 static/images/figure1~4.png
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title is-3">Results</h2>
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="item">
+            <img src="static/images/figure1.png" alt="First research result visualization" loading="lazy"/>
+            <h2 class="subtitle has-text-centered">First image description.</h2>
+          </div>
+          <div class="item">
+            <img src="static/images/figure2.png" alt="Second research result visualization" loading="lazy"/>
+            <h2 class="subtitle has-text-centered">Second image description.</h2>
+          </div>
+          <div class="item">
+            <img src="static/images/figure3.png" alt="Third research result visualization" loading="lazy"/>
+            <h2 class="subtitle has-text-centered">Third image description.</h2>
+          </div>
+          <div class="item">
+            <img src="static/images/figure4.png" alt="Fourth research result visualization" loading="lazy"/>
+            <h2 class="subtitle has-text-centered">Fourth image description.</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  -->
+
+  <!-- 可选组件：视频演示。视频大于 10MB 建议传 B 站 / YouTube 后嵌入
+  <section class="hero is-small is-light">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title is-3">Video Presentation</h2>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <div class="publication-video">
+              <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0"
+                allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  -->
+
+  <!-- 可选组件：海报 PDF
+  <section class="hero is-small is-light">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title">Poster</h2>
+        <iframe src="static/pdfs/poster.pdf" width="100%" height="550"></iframe>
+      </div>
+    </div>
+  </section>
+  -->
+
+  <!-- BibTeX citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <i class="fas fa-copy"></i>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <pre id="bibtex-code"><code>@misc{sun2026uabench,
+  title  = {UA-Bench: Benchmarking Large Audio-Language Models on Underwater Acoustic Recognition},
+  author = {Sun, Zhe and An, Liang and Yao, Jiayu and Qian, Ronglai and Cai, Jianing
+            and Huang, Ziwei and Fan, Qing and Yang, Zhiyuan and Cai, Yujun and Cao, Hongli
+            and Wang, Yiwei and Wang, Xiaoyan},
+  year   = {2026},
+  note   = {Under review},
+  url    = {https://sunzhe12.github.io/UA_bench/}
+}</code></pre>
+    </div>
+  </section>
+  <!-- End BibTeX citation -->
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+              You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  </body>
+</html>
