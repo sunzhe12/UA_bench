@@ -1,0 +1,5 @@
+# Python >= 3.10. CPU tooling, Mock evaluation, silence and comparisons.
+# Install GPU/model-specific dependencies via the backend setup instructions.
+PyYAML>=6.0,<7
+numpy>=1.24,<3
+soundfile>=0.12,<1

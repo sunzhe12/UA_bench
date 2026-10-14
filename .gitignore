@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Local evaluation outputs
+results/
+eval_results/
+outputs/
+
+# Dataset archives: far above GitHub's 100 MB file limit, published on
+# Hugging Face only. Keep them out of Git (use Git LFS if they must be tracked).
+testset_export/
+*.tar.gz
+downloads/
+.cache/
+.tmp/
+.water_download/
+
+# IDE / OS
+.vscode/
+.DS_Store
+Thumbs.db

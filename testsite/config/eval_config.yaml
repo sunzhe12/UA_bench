@@ -1,0 +1,173 @@
+qa_prompt_version: source_origin_v4_best_match_letter_only
+# Underwater Acoustic LLM Evaluation Configuration
+# 3-level hierarchical classification — no parameter estimation, no ablation
+
+# ============================================================
+# Taxonomy: L1 → L2 → L3 hierarchical tree
+# ============================================================
+taxonomy:
+  L1:
+    name: "Active/Passive"
+    description: "Classify the source as deliberate acoustic transmission or incidental platform-radiated noise"
+    classes:
+      - key: active
+        name: "Active - Deliberately transmitted signal"
+        aliases: ["actively transmitted", "active", "active signal", "active transmission",
+                  "active sonar", "active sonar signal", "active detection",
+                  "deliberately transmitted", "purposefully transmitted", "artificially transmitted", "deliberately emitted", "sonar transmission"]
+      - key: passive
+        name: "Passive - Source-radiated noise"
+        aliases: ["source-radiated", "source-radiated noise", "platform-radiated noise",
+                  "passive", "passive signal", "target-radiated", "target-radiated signal",
+                  "target-radiated noise", "radiated noise",
+                  "ship-radiated", "self-radiated by the source platform"]
+
+  L2:
+    name: "Signal Subcategory"
+    description: "Further classify within the L1 category"
+    classes:
+      - key: pulse
+        name: "Detection pulse"
+        parent: active
+        aliases: ["detection pulse", "sonar pulse", "sonar detection pulse",
+                  "pulse signal", "detection pulse class", "active sonar pulse"]
+      - key: communication
+        name: "Communication signal"
+        parent: active
+        aliases: ["communication", "communication signal", "underwater communication",
+                  "digital communication", "underwater acoustic communication",
+                  "acoustic communication"]
+      - key: ship_noise
+        name: "Ship-radiated noise"
+        parent: passive
+        aliases: ["ship-radiated noise", "ship radiated noise", "vessel-radiated noise",
+                  "ship noise", "vessel noise", "radiated noise", "target-radiated noise",
+                  "shipping noise"]
+
+  L3:
+    name: "Specific Type"
+    description: "Finest-grained signal/target type"
+    classes:
+      # ── Detection pulse ──
+      - key: CW
+        name: "CW (Continuous Wave)"
+        parent: pulse
+        aliases: ["CW", "CW pulse", "continuous wave", "CW continuous wave",
+                  "single-frequency pulse", "single frequency", "single tone pulse"]
+      - key: LFM
+        name: "LFM (Linear Frequency Modulation)"
+        parent: pulse
+        aliases: ["LFM", "LFM pulse", "linear frequency modulation", "linear chirp",
+                  "LFM chirp", "linear sweep", "linear FM"]
+      - key: HFM
+        name: "HFM (Hyperbolic Frequency Modulation)"
+        parent: pulse
+        aliases: ["HFM", "HFM pulse", "hyperbolic frequency modulation",
+                  "hyperbolic chirp", "hyperbolic FM", "hyperbolic sweep",
+                  "Doppler-invariant pulse"]
+
+      # ── Communication ──
+      - key: 2FSK
+        name: "2FSK (Binary Frequency Shift Keying)"
+        parent: communication
+        aliases: ["2FSK", "binary FSK", "binary frequency shift keying",
+                  "2-FSK", "2fsk", "2-level FSK"]
+      - key: 4FSK
+        name: "4FSK (Quaternary Frequency Shift Keying)"
+        parent: communication
+        aliases: ["4FSK", "quaternary FSK", "quaternary frequency shift keying",
+                  "4-FSK", "4fsk", "4-ary FSK", "4-level FSK"]
+      - key: BPSK
+        name: "BPSK (Binary Phase Shift Keying)"
+        parent: communication
+        aliases: ["BPSK", "binary PSK", "binary phase shift keying",
+                  "BPSK modulation", "bpsk", "2-PSK"]
+      - key: QPSK
+        name: "QPSK (Quadrature Phase Shift Keying)"
+        parent: communication
+        aliases: ["QPSK", "quadrature PSK", "quadrature phase shift keying",
+                  "QPSK modulation", "qpsk", "4-PSK"]
+      - key: OFDM
+        name: "OFDM (Orthogonal Frequency Division Multiplexing)"
+        parent: communication
+        aliases: ["OFDM", "orthogonal frequency division multiplexing",
+                  "OFDM modulation", "ofdm", "multi-carrier modulation"]
+
+      # ── Ship-radiated noise ──
+      - key: cargo
+        name: "Cargo vessel"
+        parent: ship_noise
+        aliases: ["cargo vessel", "cargo ship", "cargo", "merchant vessel",
+                  "merchant ship", "commercial vessel", "commercial ship",
+                  "freighter", "container ship"]
+      - key: cruise
+        name: "Cruise ship"
+        parent: ship_noise
+        aliases: ["cruise ship", "cruise", "passenger vessel", "passenger ship",
+                  "cruise liner", "ocean liner", "cruise passenger"]
+      - key: fishing
+        name: "Fishing vessel"
+        parent: ship_noise
+        aliases: ["fishing vessel", "fishing boat", "fishing", "fisherman boat",
+                  "small fishing", "trawler", "commercial fishing"]
+      - key: warship
+        name: "Naval vessel"
+        parent: ship_noise
+        aliases: ["naval vessel", "warship", "naval ship", "military vessel",
+                  "military ship", "combat vessel", "navy ship", "frigate",
+                  "destroyer"]
+      - key: underwater_target
+        name: "Underwater vehicle"
+        parent: ship_noise
+        aliases: ["underwater target", "underwater vehicle", "underwater object",
+                  "subsurface target", "submerged target", "UUV", "underwater craft",
+                  "unmanned underwater vehicle", "underwater drone", "AUV", "submarine"]
+
+# ============================================================
+# Evaluation Prompts
+# ============================================================
+prompts:
+  # --- 3-turn dialogue ---
+  three_turn:
+    turn1:
+      - "Determine whether this underwater sound is a deliberately transmitted signal or source-radiated noise.\nOptions:\nA. Active - Deliberately transmitted signal\nB. Passive - Source-radiated noise\nSelect the option that you consider the best match for the audio. You must choose exactly one of the listed options. Reply with the uppercase option letter only, without explanation or any additional text."
+      - "Is the sound intentionally transmitted for detection or communication, or radiated as noise by an operating platform?\nOptions:\nA. Active - Deliberately transmitted signal\nB. Passive - Source-radiated noise\nSelect the option that you consider the best match for the audio. You must choose exactly one of the listed options. Reply with the uppercase option letter only, without explanation or any additional text."
+      - "Classify the sound by its source: deliberate transmission or platform-radiated noise.\nOptions:\nA. Active - Deliberately transmitted signal\nB. Passive - Source-radiated noise\nSelect the option that you consider the best match for the audio. You must choose exactly one of the listed options. Reply with the uppercase option letter only, without explanation or any additional text."
+    turn2_active:
+      - "Good — the signal is {L1}. Now determine whether it is a detection pulse or communication signal, and specify the exact type.\nOptions:\nA. Active — Detection pulse — CW (Continuous Wave)\nB. Active — Detection pulse — LFM (Linear Frequency Modulation)\nC. Active — Detection pulse — HFM (Hyperbolic Frequency Modulation)\nD. Active — Communication — 2FSK (Binary Frequency Shift Keying)\nE. Active — Communication — 4FSK (Quaternary Frequency Shift Keying)\nF. Active — Communication — BPSK (Binary Phase Shift Keying)\nG. Active — Communication — QPSK (Quadrature Phase Shift Keying)\nH. Active — Communication — OFDM (Orthogonal Frequency Division Multiplexing)\nSelect the option that you consider the best match for the audio. You must choose exactly one of the listed options. Reply with the uppercase option letter only, without explanation or any additional text."
+      - "Understood — it is {L1}. Now identify which subcategory it belongs to.\nOptions:\nA. Active — Detection pulse — CW (Continuous Wave)\nB. Active — Detection pulse — LFM (Linear Frequency Modulation)\nC. Active — Detection pulse — HFM (Hyperbolic Frequency Modulation)\nD. Active — Communication — 2FSK (Binary Frequency Shift Keying)\nE. Active — Communication — 4FSK (Quaternary Frequency Shift Keying)\nF. Active — Communication — BPSK (Binary Phase Shift Keying)\nG. Active — Communication — QPSK (Quadrature Phase Shift Keying)\nH. Active — Communication — OFDM (Orthogonal Frequency Division Multiplexing)\nSelect the option that you consider the best match for the audio. You must choose exactly one of the listed options. Reply with the uppercase option letter only, without explanation or any additional text."
+      - "Signal is {L1}. What is its specific signal type?\nOptions:\nA. Active — Detection pulse — CW (Continuous Wave)\nB. Active — Detection pulse — LFM (Linear Frequency Modulation)\nC. Active — Detection pulse — HFM (Hyperbolic Frequency Modulation)\nD. Active — Communication — 2FSK (Binary Frequency Shift Keying)\nE. Active — Communication — 4FSK (Quaternary Frequency Shift Keying)\nF. Active — Communication — BPSK (Binary Phase Shift Keying)\nG. Active — Communication — QPSK (Quadrature Phase Shift Keying)\nH. Active — Communication — OFDM (Orthogonal Frequency Division Multiplexing)\nSelect the option that you consider the best match for the audio. You must choose exactly one of the listed options. Reply with the uppercase option letter only, without explanation or any additional text."
+    turn2_passive:
+      - "Good — the signal is {L1}. Identify which type of vessel or underwater vehicle produced this radiated noise.\nOptions:\nA. Passive — Ship-radiated noise — Cargo vessel\nB. Passive — Ship-radiated noise — Cruise ship\nC. Passive — Ship-radiated noise — Fishing vessel\nD. Passive — Ship-radiated noise — Naval vessel\nE. Passive — Ship-radiated noise — Underwater vehicle\nSelect the option that you consider the best match for the audio. You must choose exactly one of the listed options. Reply with the uppercase option letter only, without explanation or any additional text."
+      - "Confirmed as {L1}. Now identify the specific type of noise source.\nOptions:\nA. Passive — Ship-radiated noise — Cargo vessel\nB. Passive — Ship-radiated noise — Cruise ship\nC. Passive — Ship-radiated noise — Fishing vessel\nD. Passive — Ship-radiated noise — Naval vessel\nE. Passive — Ship-radiated noise — Underwater vehicle\nSelect the option that you consider the best match for the audio. You must choose exactly one of the listed options. Reply with the uppercase option letter only, without explanation or any additional text."
+      - "Signal is {L1}. What kind of platform emitted this noise?\nOptions:\nA. Passive — Ship-radiated noise — Cargo vessel\nB. Passive — Ship-radiated noise — Cruise ship\nC. Passive — Ship-radiated noise — Fishing vessel\nD. Passive — Ship-radiated noise — Naval vessel\nE. Passive — Ship-radiated noise — Underwater vehicle\nSelect the option that you consider the best match for the audio. You must choose exactly one of the listed options. Reply with the uppercase option letter only, without explanation or any additional text."
+    turn3: "Briefly explain your previous classification using acoustic cues you can identify in the audio. Focus on the observed cues and how they support your choice. Do not list, compare, or rule out alternative classes, and do not merely repeat the class name or its definition. If the acoustic evidence is insufficient, state this explicitly rather than inventing supporting details."
+
+# ============================================================
+# Model Configuration
+# ============================================================
+model:
+  # --- Active backend (modify here to switch models) ---
+  backend: "qwen25_omni"                    # current reproduction target
+  model_id: "Qwen/Qwen2.5-Omni-7B"          # Hugging Face id or a local path
+  device: "cuda:0"                          # or "auto" for multi-GPU
+  torch_dtype: "bfloat16"                   # bfloat16 | float16 | float32
+  max_new_tokens: 256
+  temperature: 0.0                          # 0.0 = greedy decoding
+  batch_size: 1                             # voxtral / qwen25_omni / af_next / gemma4 / midashenglm support true batching
+  attn_implementation: "sdpa"              # sdpa | flash_attention_2
+
+  # --- Default model_id per backend (HuggingFace) ---
+  # qwen2_audio:   "Qwen/Qwen2-Audio-7B-Instruct"
+  # aero1_audio:   "lmms-lab/Aero-1-Audio"
+  # voxtral_mini:  "mistralai/Voxtral-Mini-3B-2507"
+  # voxtral_small: "mistralai/Voxtral-Small-24B-2507"
+  # af_next:       "nvidia/audio-flamingo-next-hf"
+  # kimi_audio:    "moonshotai/Kimi-Audio-7B-Instruct"
+  # qwen25_omni:   "Qwen/Qwen2.5-Omni-7B"
+  # minicpmo:      "openbmb/MiniCPM-o-2_6"
+  # gemma4:        "google/gemma-4-E2B-it"
+  # midashenglm:   "mispeech/midashenglm-7b-1021-bf16"
+
+  mock:
+    accuracy: 0.85
