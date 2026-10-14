@@ -1,9 +1,9 @@
 /* Modern CSS Variables for consistent theming */
 :root {
-  --primary-color: #2563eb;
-  --primary-hover: #1d4ed8;
+  --primary-color: #0e7490;
+  --primary-hover: #155e75;
   --secondary-color: #64748b;
-  --accent-color: #0ea5e9;
+  --accent-color: #06b6d4;
   --text-primary: #1e293b;
   --text-secondary: #64748b;
   --text-light: #94a3b8;
@@ -15,7 +15,7 @@
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-primary: linear-gradient(135deg, #0e7490 0%, #06b6d4 100%);
   --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   --gradient-subtle: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
   --border-radius: 12px;
@@ -746,6 +746,97 @@ a:focus {
     background: transparent !important;
     color: var(--text-primary) !important;
     box-shadow: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   UA-Bench refinements
+   --------------------------------------------------------------------------- */
+
+/* Hero — subtle depth-themed backdrop */
+.hero.has-backdrop {
+  background:
+    radial-gradient(1100px 400px at 50% -12%, #ecfeff 0%, rgba(236, 254, 255, 0) 70%),
+    var(--background-primary);
+}
+
+/* Teaser figure — framed and lifted off the page */
+.hero.teaser .hero-body img {
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+}
+
+/* Abstract — narrower measure with an accent rule */
+.abstract-block {
+  position: relative;
+  padding-left: 1.5rem;
+}
+.abstract-block::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--gradient-primary);
+}
+.abstract-block p {
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  color: #334155;
+}
+
+/* Key metrics grid */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+.metric {
+  padding: 1.5rem 1rem;
+  border-radius: var(--border-radius-lg);
+  background: var(--background-primary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+.metric:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: #a5f3fc;
+}
+.metric-value {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.15;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.35rem;
+}
+.metric-label {
+  display: block;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .metric-value {
+    font-size: 1.45rem;
+  }
+  .abstract-block {
+    padding-left: 1rem;
   }
 }
 
