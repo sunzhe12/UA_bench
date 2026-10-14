@@ -48,7 +48,9 @@
   <meta name="citation_author" content="Wang, Xiaoyan">
   <meta name="citation_publication_date" content="2026">
   <meta name="citation_conference_title" content="Under Review">
-  <meta name="citation_pdf_url" content="https://sunzhe12.github.io/ua-bench/static/pdfs/paper.pdf">
+  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2610.16942">
+  <meta name="citation_arxiv_id" content="2610.16942">
+  <meta name="citation_doi" content="10.48550/arXiv.2610.16942">
 
   <meta name="theme-color" content="#2563eb">
 
@@ -151,7 +153,7 @@
   -->
 
   <main id="main-content">
-  <section class="hero">
+  <section class="hero has-backdrop">
     <div class="hero-body">
       <div class="container is-max-desktop">
         <div class="columns is-centered">
@@ -180,9 +182,8 @@
 
             <div class="column has-text-centered">
               <div class="publication-links">
-                <!-- TODO(UA-Bench): 把论文 PDF 放到 static/pdfs/paper.pdf（现在是占位文件） -->
                 <span class="link-block">
-                  <a href="static/pdfs/paper.pdf" target="_blank"
+                  <a href="https://arxiv.org/abs/2610.16942" target="_blank"
                   class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fas fa-file-pdf"></i></span>
                   <span>Paper</span>
@@ -197,24 +198,15 @@
                   </a>
                 </span>
 
-                <!-- arXiv 按钮：拿到 arXiv ID 后取消注释并替换
                 <span class="link-block">
-                  <a href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank"
-                  class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon"><i class="ai ai-arxiv"></i></span>
-                  <span>arXiv</span>
-                  </a>
-                </span>
-                -->
-
-                <!-- 可选：数据集 / 补充材料，需要时取消注释
-                <span class="link-block">
-                  <a href="https://DATASET_LINK" target="_blank"
+                  <a href="https://huggingface.co/datasets/zhesun12/water" target="_blank"
                   class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fas fa-database"></i></span>
-                  <span>Dataset</span>
+                  <span>Data</span>
                   </a>
                 </span>
+
+                <!-- 可选：补充材料，需要时取消注释
                 <span class="link-block">
                   <a href="static/pdfs/supplementary_material.pdf" target="_blank"
                   class="external-link button is-normal is-rounded is-dark">
@@ -260,7 +252,7 @@
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
           <h2 class="title is-3">Abstract</h2>
-          <div class="content has-text-justified">
+          <div class="content has-text-justified abstract-block">
             <p>
               Large audio-language models (LALMs) are fast becoming a general interface to sound, yet how far their
               broad pretraining carries into specialized domains remains largely open. Underwater acoustics is a case in
@@ -269,9 +261,10 @@
               setting is not straightforward. Annotated recordings are costly to collect, and a faithful synthetic alternative
               has to bring together many interacting factors: the structure of detection pulses, communication waveforms,
               and ship-radiated noise, and the sound-speed profile, geometry, and multipath propagation through which
-              each reaches the receiver. We address this with UA-Bench, a synthetic benchmark of 375,051 audio records
-              that couples parameterized sources with modeled propagation, so that every record can be traced to the
-              conditions that produced it. The records span these three signal families, and each carries a three-level label
+              each reaches the receiver. We address this by proposing UA-Bench, to our knowledge the first
+              large-scale benchmark for evaluating LALMs on underwater acoustic signal recognition. It comprises
+              375,051 audio records that couple parameterized sources with modeled propagation, so that every record
+              can be traced to the conditions that produced it. The records span these three signal families, and each carries a three-level label
               hierarchy (13 leaf classes), a templated multi-turn dialogue, and source and channel metadata. We evaluate
               on a balanced 2,600-record subset with a gated coarse-to-fine protocol that locates each error at source
               routing, fine-grained classification, or output format, and add a paired silent-audio control to test whether
@@ -287,6 +280,34 @@
     </div>
   </section>
   <!-- End paper abstract -->
+
+  <!-- Key metrics -->
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">At a glance</h2>
+        <div class="metrics">
+          <div class="metric">
+            <span class="metric-value">375,051</span>
+            <span class="metric-label">synthetic audio records with full source and channel metadata</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">13</span>
+            <span class="metric-label">leaf classes across a three-level label hierarchy</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">2,600</span>
+            <span class="metric-label">balanced records in the evaluation subset</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">9</span>
+            <span class="metric-label">open LALMs evaluated without task-specific adaptation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End key metrics -->
 
   <!-- 可选组件：结果图轮播。有更多结果图时取消下面这段注释，替换 static/images/figure1~4.png
   <section class="hero is-small">
@@ -356,13 +377,17 @@
         </button>
       </div>
       <pre id="bibtex-code"><code>@misc{sun2026uabench,
-  title  = {UA-Bench: Benchmarking Large Audio-Language Models on Underwater Acoustic Recognition},
-  author = {Sun, Zhe and An, Liang and Yao, Jiayu and Qian, Ronglai and Cai, Jianing
-            and Huang, Ziwei and Fan, Qing and Yang, Zhiyuan and Cai, Yujun and Cao, Hongli
-            and Wang, Yiwei and Wang, Xiaoyan},
-  year   = {2026},
-  note   = {Under review},
-  url    = {https://sunzhe12.github.io/ua-bench/}
+  title         = {UA-Bench: Benchmarking Large Audio-Language Models on Underwater Acoustic Recognition},
+  author        = {Sun, Zhe and An, Liang and Yao, Jiayu and Qian, Ronglai and Cai, Jianing
+                   and Huang, Ziwei and Fan, Qing and Yang, Zhiyuan and Cai, Yujun and Cao, Hongli
+                   and Wang, Yiwei and Wang, Xiaoyan},
+  year          = {2026},
+  eprint        = {2610.16942},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.SD},
+  note          = {Under review},
+  doi           = {10.48550/arXiv.2610.16942},
+  url           = {https://sunzhe12.github.io/ua-bench/}
 }</code></pre>
     </div>
   </section>
