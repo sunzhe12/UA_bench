@@ -1,83 +1,170 @@
-# UA-Bench — Project Page
+# UA-Bench
 
-Project page for the paper **UA-Bench**, built with the [Academic Project Page Template](https://github.com/eliahuhorwitz/Academic-project-page-template) (adopted from the [Nerfies](https://nerfies.github.io/) page).
+**Project page:** https://sunzhe12.github.io/ua-bench/ ·
+**Paper:** https://arxiv.org/abs/2610.16942 ·
+**Dataset:** https://huggingface.co/datasets/zhesun12/water
 
-- **Live page:** https://sunzhe12.github.io/ua-bench/
-- **Source repo:** https://github.com/sunzhe12/ua-bench
+A three-level hierarchical classification benchmark for underwater acoustic signals. This repository contains the **evaluation framework**: it reads the released dataset, asks the three fixed questions embedded in each record, then parses and scores the answers.
 
-## Structure
+| Level | Values |
+|---|---|
+| L1 | `active` / `passive` |
+| L2 | `pulse` / `communication` / `ship_noise` |
+| L3 | CW, LFM, HFM, 2FSK, 4FSK, BPSK, QPSK, OFDM, cargo, cruise, fishing, warship, underwater_target |
 
-GitHub Pages is configured to publish **only `docs/`**, so code and data stay
-off the website.
+## Repository layout
 
 ```
-.
-├── README.md                   # 本文件
-├── docs/                       # ← Pages 只发布这个目录
-│   ├── index.html              # 整个页面，所有内容都在这里改
-│   ├── .nojekyll               # 告诉 Pages 不要跑 Jekyll
-│   └── static/
-│       ├── css/                # Bulma + FontAwesome + 主题样式
-│       ├── js/                 # 轮播、复制按钮等交互
-│       ├── images/
-│       │   ├── teaser.jpg      # 首页主图（论文 Figure 1）
-│       │   ├── figure1~4.png   # 结果轮播图（占位，轮播当前已注释）
-│       │   ├── social_preview.jpg
-│       │   └── favicon.ico     # 站点图标（占位）
-│       ├── pdfs/paper.pdf      # 论文 PDF（占位）
-│       └── videos/             # 演示视频，>10MB 建议传 B 站 / YouTube
-├── src/                        # 代码放这里，不会被 Pages 发布
-└── data/                       # 数据集不进 git，见 data/README.md
+README.md
+testsite/
+  core/       loading, answer parsing, scoring, model backends, statistics
+  eval/       three-turn orchestration
+  config/     taxonomy and default run settings
+  scripts/    run, merge, silence generation, paired comparison, dataset download
+  reporting/  Markdown report generation
+  tests/      regression checks
 ```
 
-## Fill in your content
+## Dataset
 
-### Done
+The evaluation set is published on Hugging Face and is **not stored in this repository** (the archive is far above GitHub's 100 MB file limit):
 
-- [x] Paper title (title, `<h1>`, Open Graph, BibTeX, meta)
-- [x] Author list (12 authors; first author linked, corresponding author marked <sup>&sect;</sup>)
-- [x] Institution (Southeast University) and venue (Under Review)
-- [x] Abstract, verbatim from the manuscript
-- [x] BibTeX entry (`@misc`, key `sun2026uabench`)
-- [x] `docs/static/images/teaser.jpg` — paper Figure 1, downscaled 11520x6480 → 2000x1125 (527 KB)
-- [x] `docs/static/images/social_preview.jpg` — 1200x630, cropped from the teaser
+- [`zhesun12/water`](https://huggingface.co/datasets/zhesun12/water) — `testset_export_v2.tar.gz`, 2600 records, 13 classes x 200, about 2.2 GB.
 
-### Remaining
+```bash
+bash testsite/scripts/download_water_testset.sh                # extracts into ./testset_export
+bash testsite/scripts/download_water_testset.sh /data/ua        # or choose a target directory
+```
 
-- [ ] `docs/static/pdfs/paper.pdf` → replace the placeholder with the real paper
-- [ ] arXiv ID → uncomment the arXiv button in `docs/index.html`
-- [ ] `docs/static/images/favicon.ico` → your own favicon
-- [ ] Result figures → drop into `docs/static/images/figure1~4.png`, uncomment the Results carousel
-- [ ] Teaser caption (removed for now — add one under the image if you want it)
+The script needs the `hf` CLI (`pip install huggingface_hub`). It verifies the archive size and SHA-256 and refuses entries containing absolute paths or `..`. `TESTSET_DIR`, `DATASET_REVISION`, `EXPECTED_SIZE` and `EXPECTED_SHA256` override the defaults; if the dataset on Hugging Face is replaced, update `revision` and the two checksums in the script. The result looks like this:
 
-Optional blocks are commented out in `docs/index.html` — uncomment to enable:
-video teaser, YouTube presentation, video carousel, poster PDF, dataset /
-supplementary buttons, and the "More Works" dropdown.
+```
+testset_export/
+  sft_test_highquality.jsonl   # manifest
+  audio/...                    # processed WAV (16 kHz)
+```
 
-## GitHub Pages
+## Installation
 
-Already enabled — **Deploy from a branch → `main` → `/docs`**, HTTPS enforced.
+Python 3.10 or newer.
 
-- Live page: https://sunzhe12.github.io/ua-bench/
-- Every push to `main` redeploys automatically.
-- Only `docs/` is published, so anything under `src/` or `data/` never reaches
-  the website.
+```bash
+python -m pip install -r testsite/requirements.txt   # PyYAML / NumPy / SoundFile
+```
 
-To reconfigure: Settings → Pages → *Build and deployment* → Source.
+PyTorch, Transformers and whatever each backend needs are installed according to that model's own documentation; this repository does not pin a GPU build.
 
-> If you ever move the page out of `docs/`, remember to update the Pages folder
-> too, otherwise the site goes 404.
+## Running an evaluation
 
-> The repo was renamed from `UA_bench` to `ua-bench` — lowercase is the
-> convention for Pages URLs. GitHub redirects the old address automatically.
+Run from the **directory that contains `testsite/`**.
 
-## Tips
+The `audio` field in the manifest is a relative path, resolved as `<audio-root> / <audio field>`. A single missing audio file aborts the run.
 
-- Compress images with [TinyPNG](https://tinypng.com); ~1920px wide is plenty.
-- Host videos larger than 10MB on YouTube / Bilibili and embed them.
-- During double-blind review, keep the page anonymous (no author names or
-  affiliations) until the rebuttal phase.
+Verify the environment with the mock backend first:
+
+```bash
+python -m testsite.scripts.run_eval --mock 26 --backend mock --output-dir results/mock_check
+```
+
+Single GPU (or a single process):
+
+```bash
+python -m testsite.scripts.run_eval \
+  --data testset_export/sft_test_highquality.jsonl \
+  --audio-root testset_export \
+  --backend qwen25_omni \
+  --model-id Qwen/Qwen2.5-Omni-7B \
+  --output-dir results/run_001
+```
+
+`--backend` also accepts `qwen2_audio`, `aero1_audio`, `voxtral_mini`, `voxtral_small`, `af_next`, `kimi_audio`, `minicpmo`, `gemma4` and `midashenglm`. Only `voxtral_*`, `qwen25_omni`, `af_next`, `gemma4` and `midashenglm` support true batching; the rest fall back to per-sample generation. Run `python -m testsite.scripts.run_eval --help` for the full option list.
+
+### Sharding across GPUs
+
+Every shard of one run must be given the **same `--run-id`**. The manifest is split deterministically by line number, so shards do not overlap:
+
+```bash
+RUN_ID=$(python -c 'import uuid; print(uuid.uuid4().hex)')
+for i in 0 1 2 3; do
+  CUDA_VISIBLE_DEVICES=$i python -m testsite.scripts.run_eval \
+    --data testset_export/sft_test_highquality.jsonl \
+    --audio-root testset_export \
+    --backend qwen25_omni --model-id Qwen/Qwen2.5-Omni-7B \
+    --num-shards 4 --shard-index $i --run-id "$RUN_ID" \
+    --output-dir results/run_001 &
+done
+wait
+```
+
+### Merging
+
+Concatenate the shard predictions into one file first, then merge; `--protocol` must list **all** protocol shards of that run:
+
+```bash
+cat results/run_001/predictions_shard_*.jsonl > results/run_001/predictions.jsonl
+
+python -m testsite.scripts.merge_predictions \
+  --input results/run_001/predictions.jsonl \
+  --output results/run_001/metrics.json \
+  --manifest testset_export/sft_test_highquality.jsonl \
+  --protocol results/run_001/protocol_shard_*.json
+```
+
+Always point each run at a fresh output directory so that fixed-name prediction and protocol files are not overwritten.
+
+## Output files
+
+Each main run writes:
+
+| File | Contents |
+|---|---|
+| `predictions_shard_NNN.jsonl` | Per sample: the questions actually sent, raw outputs, parse results, gating state |
+| `protocol_shard_NNN.json` | Run signature, manifest hash, implementation hashes, taxonomy used |
+| `eval_metrics_*.json` | L1/L2/L3 accuracy, L3 macro F1, L2\|L1, L3\|L2, per-class P/R/F1, confusion matrix |
+| `eval_report_*.md` | The metrics above plus the five Turn 3 lexical diagnostics |
+
+## Silence control (optional supplementary experiment)
+
+Pairs the original audio with equal-duration, equal-rate silence under the same protocol and procedure.
+
+```bash
+# 1. Build the control; creates a fresh timestamped directory
+python -m testsite.scripts.generate_silent_control \
+  --data testset_export/sft_test_highquality.jsonl \
+  --audio-root testset_export \
+  --output-prefix silent_control
+
+# 2. Run each condition once, same model and decoding settings
+python -m testsite.scripts.run_eval --data CONTROL_DIR/original.jsonl --audio-root CONTROL_DIR \
+  --backend qwen25_omni --model-id Qwen/Qwen2.5-Omni-7B --output-dir results/original
+python -m testsite.scripts.run_eval --data CONTROL_DIR/silent.jsonl --audio-root CONTROL_DIR \
+  --backend qwen25_omni --model-id Qwen/Qwen2.5-Omni-7B --output-dir results/silent
+
+# 3. Verify the pairing and export the differences
+python -m testsite.scripts.compare_silent_control \
+  --control-dir CONTROL_DIR \
+  --original-predictions results/original/predictions.jsonl \
+  --silent-predictions results/silent/predictions.jsonl \
+  --original-protocol results/original/protocol_shard_*.json \
+  --silent-protocol results/silent/protocol_shard_*.json \
+  --output-prefix results/comparison
+```
+
+Replace `CONTROL_DIR` with the directory printed by step 1. Differences are defined as **original minus silent** and are not assumed to be positive.
+
+## Tests
+
+```bash
+python -m unittest discover -s testsite/tests
+```
+
+The test suite is the executable specification of the parsing, gating, scoring and integrity rules enforced by the framework.
 
 ## License
 
-Page design licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/); parts adopted from the [Nerfies](https://nerfies.github.io/) project page. Keep the footer attribution.
+MIT — see [LICENSE](LICENSE).
+
+## Notes
+
+- The test set is a **diagnostic subset collected under favourable conditions** (the top 200 per class by channel gain and source SNR). It does not represent the full range of sea states or operational conditions.
+- The exact answer format, cascade gating, metric definitions and integrity checks are implemented in `testsite/core/` and covered by `testsite/tests/`. Merging refuses a partial set of samples: a full-manifest evaluation cannot be substituted by a subset.
