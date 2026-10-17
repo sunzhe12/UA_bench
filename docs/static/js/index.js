@@ -1,5 +1,3 @@
-window.HELP_IMPROVE_VIDEOJS = false;
-
 // More Works Dropdown Functionality
 function toggleMoreWorks() {
     const dropdown = document.getElementById('moreWorksDropdown');
@@ -90,53 +88,66 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// Video carousel autoplay when in view
-function setupVideoCarouselAutoplay() {
-    const carouselVideos = document.querySelectorAll('.results-carousel video');
-    
-    if (carouselVideos.length === 0) return;
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const video = entry.target;
-            if (entry.isIntersecting) {
-                // Video is in view, play it
-                video.play().catch(e => {
-                    // Autoplay failed, probably due to browser policy
-                    console.log('Autoplay prevented:', e);
-                });
-            } else {
-                // Video is out of view, pause it
-                video.pause();
-            }
-        });
-    }, {
-        threshold: 0.5 // Trigger when 50% of the video is visible
-    });
-    
-    carouselVideos.forEach(video => {
-        observer.observe(video);
-    });
-}
+// Results carousel — self-contained replacement for the mismatched
+// bulma-carousel bundle (the shipped JS was actually bulma-slider).
+document.addEventListener('DOMContentLoaded', function() {
+    const root = document.querySelector('.results-carousel');
+    if (!root) return;
 
-$(document).ready(function() {
-    // Check for click events on the navbar burger icon
+    const track = root.querySelector('.rc-track');
+    const items = Array.from(track.children);
+    const dotsWrap = root.querySelector('.rc-dots');
+    const prevBtn = root.querySelector('.rc-prev');
+    const nextBtn = root.querySelector('.rc-next');
+    const reduceMotion = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    var options = {
-		slidesToScroll: 1,
-		slidesToShow: 1,
-		loop: true,
-		infinite: true,
-		autoplay: true,
-		autoplaySpeed: 5000,
+    let index = 0;
+    let timer = null;
+    let visible = true;
+    let hovered = false;
+
+    const dots = items.map(function(_, i) {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'rc-dot' + (i === 0 ? ' is-active' : '');
+        dot.setAttribute('aria-label', 'Show result figure ' + (i + 1));
+        dot.addEventListener('click', function() { goTo(i); restart(); });
+        dotsWrap.appendChild(dot);
+        return dot;
+    });
+
+    function goTo(i) {
+        index = (i + items.length) % items.length;
+        track.style.transform = 'translateX(' + (-index * 100) + '%)';
+        dots.forEach(function(d, j) { d.classList.toggle('is-active', j === index); });
     }
 
-	// Initialize all div with carousel class
-    var carousels = bulmaCarousel.attach('.carousel', options);
-	
-    bulmaSlider.attach();
-    
-    // Setup video autoplay for carousel
-    setupVideoCarouselAutoplay();
+    function start() {
+        if (reduceMotion || timer) return;
+        timer = setInterval(function() { goTo(index + 1); }, 6000);
+    }
 
-})
+    function stop() {
+        if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    function restart() { stop(); start(); }
+
+    prevBtn.addEventListener('click', function() { goTo(index - 1); restart(); });
+    nextBtn.addEventListener('click', function() { goTo(index + 1); restart(); });
+    root.addEventListener('mouseenter', function() { hovered = true; stop(); });
+    root.addEventListener('mouseleave', function() { hovered = false; if (visible) start(); });
+
+    // Pause autoplay while the carousel is scrolled out of view
+    if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                visible = entry.isIntersecting;
+                if (visible && !hovered) { start(); } else { stop(); }
+            });
+        }, { threshold: 0.15 }).observe(root);
+    }
+
+    start();
+});

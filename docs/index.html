@@ -62,19 +62,15 @@
   <title>UA-Bench: Benchmarking Large Audio-Language Models on Underwater Acoustic Recognition</title>
 
   <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
-  <link rel="apple-touch-icon" href="static/images/favicon.ico">
+  <link rel="apple-touch-icon" href="static/images/favicon-180.png">
 
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/index.css">
 
-  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 
   <noscript>
-    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
-    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
     <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   </noscript>
@@ -85,10 +81,10 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
   </noscript>
 
-  <!-- jQuery 已移除：页面脚本与 bulma-carousel 均不依赖它，且 ajax.googleapis.com 在国内不通 -->
+  <!-- jQuery 已移除：页面脚本不依赖它，且 ajax.googleapis.com 在国内不通。
+       原 bulma-carousel / bulma-slider 文件也已移除：仓库里的 carousel JS 实际是
+       bulma-slider，与 CSS 不配套，轮播改由 static/js/index.js 自带实现。 -->
   <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script defer src="static/js/bulma-carousel.min.js"></script>
-  <script defer src="static/js/bulma-slider.min.js"></script>
   <script defer src="static/js/index.js"></script>
 
   <!-- Structured Data for Academic Papers -->
@@ -309,33 +305,44 @@
   </section>
   <!-- End key metrics -->
 
-  <!-- 可选组件：结果图轮播。有更多结果图时取消下面这段注释，替换 static/images/figure1~4.png
-  <section class="hero is-small">
+  <!-- Results -->
+  <section class="hero is-small" id="results">
     <div class="hero-body">
       <div class="container">
         <h2 class="title is-3">Results</h2>
-        <div id="results-carousel" class="carousel results-carousel">
-          <div class="item">
-            <img src="static/images/figure1.png" alt="First research result visualization" loading="lazy"/>
-            <h2 class="subtitle has-text-centered">First image description.</h2>
+        <div class="results-carousel">
+          <div class="rc-viewport">
+            <div class="rc-track">
+              <div class="rc-item">
+                <img src="static/images/results_class_diagnostics.png" loading="lazy"
+                  alt="Confusion matrix over the thirteen leaf classes with cascade and unresolved columns, and per-class precision, recall and F1 scores"/>
+                <p class="rc-caption">Class-level diagnostics for the best evaluated model (MiDashengLM-7B-1021, strict single-letter decoding): row-normalized confusion matrix over the 13 leaf classes with cascade and unresolved prediction columns, plus per-class precision, recall and F1.</p>
+              </div>
+              <div class="rc-item">
+                <img src="static/images/results_error_decomposition.png" loading="lazy"
+                  alt="Stacked bars partitioning all evaluation records into Turn 1 invalid, Turn 1 wrong, Turn 2 invalid, Turn 2 wrong and leaf-correct outcomes for nine models"/>
+                <p class="rc-caption">Decision-stage error decomposition: each bar partitions all 2,600 evaluation records into invalid-format and valid-but-incorrect outcomes at Turn&nbsp;1, the corresponding outcomes at Turn&nbsp;2 after a correct route, and correct leaf decisions.</p>
+              </div>
+              <div class="rc-item">
+                <img src="static/images/results_silence_control.png" loading="lazy"
+                  alt="Leaf accuracy with original audio versus matched silence, and original-minus-silent differences in routing accuracy for nine models"/>
+                <p class="rc-caption">Paired original-versus-silent control: (a) leaf accuracy with original audio versus duration-matched silence; (b) original-minus-silent difference in source-routing accuracy. The waveform helps routing far more than leaf recognition.</p>
+              </div>
+              <div class="rc-item">
+                <img src="static/images/results_metadata_recall.png" loading="lazy"
+                  alt="Class-balanced recall across channel-gain strata for active leaves and tonal-to-continuum strata for ship-noise leaves"/>
+                <p class="rc-caption">Class-balanced recall across within-class metadata strata: (a) the eight active leaves stratified by channel energy gain <em>G<sub>h</sub></em>; (b) the five ship-noise leaves stratified by source tonal-to-continuum power ratio <em>S<sub>src</sub></em>.</p>
+              </div>
+            </div>
           </div>
-          <div class="item">
-            <img src="static/images/figure2.png" alt="Second research result visualization" loading="lazy"/>
-            <h2 class="subtitle has-text-centered">Second image description.</h2>
-          </div>
-          <div class="item">
-            <img src="static/images/figure3.png" alt="Third research result visualization" loading="lazy"/>
-            <h2 class="subtitle has-text-centered">Third image description.</h2>
-          </div>
-          <div class="item">
-            <img src="static/images/figure4.png" alt="Fourth research result visualization" loading="lazy"/>
-            <h2 class="subtitle has-text-centered">Fourth image description.</h2>
-          </div>
+          <button type="button" class="rc-nav rc-prev" aria-label="Previous result figure"><i class="fas fa-chevron-left"></i></button>
+          <button type="button" class="rc-nav rc-next" aria-label="Next result figure"><i class="fas fa-chevron-right"></i></button>
+          <div class="rc-dots"></div>
         </div>
       </div>
     </div>
   </section>
-  -->
+  <!-- End results -->
 
   <!-- 可选组件：视频演示。视频大于 10MB 建议传 B 站 / YouTube 后嵌入
   <section class="hero is-small is-light">
@@ -365,6 +372,136 @@
     </div>
   </section>
   -->
+
+  <!-- Evaluation examples -->
+  <section class="section hero is-light" id="examples">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Evaluation examples</h2>
+      <p class="section-intro has-text-centered">
+        One representative 4-second clip per leaf class, drawn from the 2,600-record
+        evaluation subset after BELLHOP propagation (16&nbsp;kHz mono). Spectrograms use a
+        50&nbsp;dB dynamic range; the full dataset is on
+        <a href="https://huggingface.co/datasets/zhesun12/water" target="_blank">Hugging&nbsp;Face</a>.
+      </p>
+
+      <h3 class="example-group-title">Detection pulses</h3>
+      <div class="example-grid">
+        <div class="example-card">
+          <img src="static/images/examples/CW.png" alt="Spectrogram of a continuous-wave detection pulse" loading="lazy"/>
+          <div class="example-body">
+            <span class="example-name">CW<span class="example-full">Continuous wave</span></span>
+            <audio controls preload="none" src="static/audio/examples/CW.mp3"></audio>
+            <span class="example-meta">carrier &asymp; 2.39 kHz &middot; 4.0 s clip</span>
+          </div>
+        </div>
+        <div class="example-card">
+          <img src="static/images/examples/LFM.png" alt="Spectrogram of a linear frequency modulation pulse" loading="lazy"/>
+          <div class="example-body">
+            <span class="example-name">LFM<span class="example-full">Linear frequency modulation</span></span>
+            <audio controls preload="none" src="static/audio/examples/LFM.mp3"></audio>
+            <span class="example-meta">sweep 1.67&ndash;2.24 kHz &middot; 4.0 s clip</span>
+          </div>
+        </div>
+        <div class="example-card">
+          <img src="static/images/examples/HFM.png" alt="Spectrogram of a hyperbolic frequency modulation pulse" loading="lazy"/>
+          <div class="example-body">
+            <span class="example-name">HFM<span class="example-full">Hyperbolic frequency modulation</span></span>
+            <audio controls preload="none" src="static/audio/examples/HFM.mp3"></audio>
+            <span class="example-meta">sweep 2.22&ndash;4.61 kHz &middot; 4.0 s clip</span>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="example-group-title">Communication waveforms</h3>
+      <div class="example-grid">
+        <div class="example-card">
+          <img src="static/images/examples/2FSK.png" alt="Spectrogram of a binary frequency-shift keying signal" loading="lazy"/>
+          <div class="example-body">
+            <span class="example-name">2FSK<span class="example-full">Binary frequency-shift keying</span></span>
+            <audio controls preload="none" src="static/audio/examples/2FSK.mp3"></audio>
+            <span class="example-meta">band 2.82&ndash;3.53 kHz &middot; 4.0 s clip</span>
+          </div>
+        </div>
+        <div class="example-card">
+          <img src="static/images/examples/4FSK.png" alt="Spectrogram of a quaternary frequency-shift keying signal" loading="lazy"/>
+          <div class="example-body">
+            <span class="example-name">4FSK<span class="example-full">Quaternary frequency-shift keying</span></span>
+            <audio controls preload="none" src="static/audio/examples/4FSK.mp3"></audio>
+            <span class="example-meta">band 4.03&ndash;4.94 kHz &middot; 4.0 s clip</span>
+          </div>
+        </div>
+        <div class="example-card">
+          <img src="static/images/examples/BPSK.png" alt="Spectrogram of a binary phase-shift keying signal" loading="lazy"/>
+          <div class="example-body">
+            <span class="example-name">BPSK<span class="example-full">Binary phase-shift keying</span></span>
+            <audio controls preload="none" src="static/audio/examples/BPSK.mp3"></audio>
+            <span class="example-meta">band 4.92&ndash;7.38 kHz &middot; 4.0 s clip</span>
+          </div>
+        </div>
+        <div class="example-card">
+          <img src="static/images/examples/QPSK.png" alt="Spectrogram of a quadrature phase-shift keying signal" loading="lazy"/>
+          <div class="example-body">
+            <span class="example-name">QPSK<span class="example-full">Quadrature phase-shift keying</span></span>
+            <audio controls preload="none" src="static/audio/examples/QPSK.mp3"></audio>
+            <span class="example-meta">band 6.27&ndash;7.67 kHz &middot; 4.0 s clip</span>
+          </div>
+        </div>
+        <div class="example-card">
+          <img src="static/images/examples/OFDM.png" alt="Spectrogram of an orthogonal frequency division multiplexing signal" loading="lazy"/>
+          <div class="example-body">
+            <span class="example-name">OFDM<span class="example-full">Orthogonal frequency division multiplexing</span></span>
+            <audio controls preload="none" src="static/audio/examples/OFDM.mp3"></audio>
+            <span class="example-meta">band 3.74&ndash;5.74 kHz &middot; 4.0 s clip</span>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="example-group-title">Ship-radiated noise</h3>
+      <div class="example-grid">
+        <div class="example-card">
+          <img src="static/images/examples/cargo.png" alt="Spectrogram of cargo vessel radiated noise" loading="lazy"/>
+          <div class="example-body">
+            <span class="example-name">Cargo ship<span class="example-full">Cargo vessel radiated noise</span></span>
+            <audio controls preload="none" src="static/audio/examples/cargo.mp3"></audio>
+            <span class="example-meta">4.0 s clip &middot; 16 kHz mono</span>
+          </div>
+        </div>
+        <div class="example-card">
+          <img src="static/images/examples/cruise.png" alt="Spectrogram of cruise vessel radiated noise" loading="lazy"/>
+          <div class="example-body">
+            <span class="example-name">Cruise ship<span class="example-full">Cruise vessel radiated noise</span></span>
+            <audio controls preload="none" src="static/audio/examples/cruise.mp3"></audio>
+            <span class="example-meta">4.0 s clip &middot; 16 kHz mono</span>
+          </div>
+        </div>
+        <div class="example-card">
+          <img src="static/images/examples/fishing.png" alt="Spectrogram of fishing vessel radiated noise" loading="lazy"/>
+          <div class="example-body">
+            <span class="example-name">Fishing boat<span class="example-full">Fishing vessel radiated noise</span></span>
+            <audio controls preload="none" src="static/audio/examples/fishing.mp3"></audio>
+            <span class="example-meta">4.0 s clip &middot; 16 kHz mono</span>
+          </div>
+        </div>
+        <div class="example-card">
+          <img src="static/images/examples/warship.png" alt="Spectrogram of warship radiated noise" loading="lazy"/>
+          <div class="example-body">
+            <span class="example-name">Warship<span class="example-full">Warship radiated noise</span></span>
+            <audio controls preload="none" src="static/audio/examples/warship.mp3"></audio>
+            <span class="example-meta">4.0 s clip &middot; 16 kHz mono</span>
+          </div>
+        </div>
+        <div class="example-card">
+          <img src="static/images/examples/underwater_target.png" alt="Spectrogram of underwater vehicle radiated noise" loading="lazy"/>
+          <div class="example-body">
+            <span class="example-name">Underwater vehicle<span class="example-full">Underwater vehicle radiated noise</span></span>
+            <audio controls preload="none" src="static/audio/examples/underwater_target.mp3"></audio>
+            <span class="example-meta">4.0 s clip &middot; 16 kHz mono</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End evaluation examples -->
 
   <!-- BibTeX citation -->
   <section class="section" id="BibTeX">

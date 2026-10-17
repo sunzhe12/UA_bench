@@ -1,0 +1,212 @@
+{
+  "clip_s": 4.0,
+  "sr": 16000,
+  "examples": {
+    "CW": {
+      "family": "pulse",
+      "family_label": "Detection pulses",
+      "display": "CW",
+      "fullname": "Continuous wave",
+      "record_id": "cw_014810_ch0",
+      "record_duration_s": 5.0,
+      "clip_s": 4.0,
+      "center_hz": 2385,
+      "band_hz": [
+        2147,
+        2624
+      ],
+      "mp3": "static/audio/examples/CW.mp3",
+      "spectrogram": "static/images/examples/CW.png",
+      "mp3_kb": 24.0
+    },
+    "LFM": {
+      "family": "pulse",
+      "family_label": "Detection pulses",
+      "display": "LFM",
+      "fullname": "Linear frequency modulation",
+      "record_id": "lfm_017272_ch1",
+      "record_duration_s": 4.5,
+      "clip_s": 4.0,
+      "center_hz": 1956,
+      "band_hz": [
+        1667,
+        2244
+      ],
+      "mp3": "static/audio/examples/LFM.mp3",
+      "spectrogram": "static/images/examples/LFM.png",
+      "mp3_kb": 24.0
+    },
+    "HFM": {
+      "family": "pulse",
+      "family_label": "Detection pulses",
+      "display": "HFM",
+      "fullname": "Hyperbolic frequency modulation",
+      "record_id": "hfm_017564_ch1",
+      "record_duration_s": 4.7,
+      "clip_s": 4.0,
+      "center_hz": 3416,
+      "band_hz": [
+        2221,
+        4610
+      ],
+      "mp3": "static/audio/examples/HFM.mp3",
+      "spectrogram": "static/images/examples/HFM.png",
+      "mp3_kb": 24.0
+    },
+    "2FSK": {
+      "family": "communication",
+      "family_label": "Communication waveforms",
+      "display": "2FSK",
+      "fullname": "Binary frequency-shift keying",
+      "record_id": "2fsk_008088_ch1",
+      "record_duration_s": 6.99,
+      "clip_s": 4.0,
+      "center_hz": null,
+      "band_hz": [
+        2818,
+        3529
+      ],
+      "mp3": "static/audio/examples/2FSK.mp3",
+      "spectrogram": "static/images/examples/2FSK.png",
+      "mp3_kb": 24.0
+    },
+    "4FSK": {
+      "family": "communication",
+      "family_label": "Communication waveforms",
+      "display": "4FSK",
+      "fullname": "Quaternary frequency-shift keying",
+      "record_id": "4fsk_013815_ch0",
+      "record_duration_s": 7.54,
+      "clip_s": 4.0,
+      "center_hz": null,
+      "band_hz": [
+        4033,
+        4943
+      ],
+      "mp3": "static/audio/examples/4FSK.mp3",
+      "spectrogram": "static/images/examples/4FSK.png",
+      "mp3_kb": 24.0
+    },
+    "BPSK": {
+      "family": "communication",
+      "family_label": "Communication waveforms",
+      "display": "BPSK",
+      "fullname": "Binary phase-shift keying",
+      "record_id": "bpsk_015649_ch0",
+      "record_duration_s": 6.76,
+      "clip_s": 4.0,
+      "center_hz": null,
+      "band_hz": [
+        4921,
+        7382
+      ],
+      "mp3": "static/audio/examples/BPSK.mp3",
+      "spectrogram": "static/images/examples/BPSK.png",
+      "mp3_kb": 24.0
+    },
+    "QPSK": {
+      "family": "communication",
+      "family_label": "Communication waveforms",
+      "display": "QPSK",
+      "fullname": "Quadrature phase-shift keying",
+      "record_id": "qpsk_012972_ch1",
+      "record_duration_s": 4.04,
+      "clip_s": 4.0,
+      "center_hz": null,
+      "band_hz": [
+        6274,
+        7666
+      ],
+      "mp3": "static/audio/examples/QPSK.mp3",
+      "spectrogram": "static/images/examples/QPSK.png",
+      "mp3_kb": 24.0
+    },
+    "OFDM": {
+      "family": "communication",
+      "family_label": "Communication waveforms",
+      "display": "OFDM",
+      "fullname": "Orthogonal frequency division multiplexing",
+      "record_id": "ofdm_009281_ch1",
+      "record_duration_s": 5.18,
+      "clip_s": 4.0,
+      "center_hz": null,
+      "band_hz": [
+        3736,
+        5736
+      ],
+      "mp3": "static/audio/examples/OFDM.mp3",
+      "spectrogram": "static/images/examples/OFDM.png",
+      "mp3_kb": 24.0
+    },
+    "cargo": {
+      "family": "ship_noise",
+      "family_label": "Ship-radiated noise",
+      "display": "Cargo ship",
+      "fullname": "Cargo vessel radiated noise",
+      "record_id": "cargo_ship_006739_ch1",
+      "record_duration_s": 29.93,
+      "clip_s": 4.0,
+      "center_hz": null,
+      "band_hz": null,
+      "mp3": "static/audio/examples/cargo.mp3",
+      "spectrogram": "static/images/examples/cargo.png",
+      "mp3_kb": 24.0
+    },
+    "cruise": {
+      "family": "ship_noise",
+      "family_label": "Ship-radiated noise",
+      "display": "Cruise ship",
+      "fullname": "Cruise vessel radiated noise",
+      "record_id": "cruise_ship_015707_ch0",
+      "record_duration_s": 29.93,
+      "clip_s": 4.0,
+      "center_hz": null,
+      "band_hz": null,
+      "mp3": "static/audio/examples/cruise.mp3",
+      "spectrogram": "static/images/examples/cruise.png",
+      "mp3_kb": 24.0
+    },
+    "fishing": {
+      "family": "ship_noise",
+      "family_label": "Ship-radiated noise",
+      "display": "Fishing boat",
+      "fullname": "Fishing vessel radiated noise",
+      "record_id": "fishing_boat_008586_ch0",
+      "record_duration_s": 29.87,
+      "clip_s": 4.0,
+      "center_hz": null,
+      "band_hz": null,
+      "mp3": "static/audio/examples/fishing.mp3",
+      "spectrogram": "static/images/examples/fishing.png",
+      "mp3_kb": 24.0
+    },
+    "warship": {
+      "family": "ship_noise",
+      "family_label": "Ship-radiated noise",
+      "display": "Warship",
+      "fullname": "Warship radiated noise",
+      "record_id": "warship_013147_ch0",
+      "record_duration_s": 29.84,
+      "clip_s": 4.0,
+      "center_hz": null,
+      "band_hz": null,
+      "mp3": "static/audio/examples/warship.mp3",
+      "spectrogram": "static/images/examples/warship.png",
+      "mp3_kb": 24.0
+    },
+    "underwater_target": {
+      "family": "ship_noise",
+      "family_label": "Ship-radiated noise",
+      "display": "Underwater vehicle",
+      "fullname": "Underwater vehicle radiated noise",
+      "record_id": "underwater_target_000707_ch0",
+      "record_duration_s": 29.98,
+      "clip_s": 4.0,
+      "center_hz": null,
+      "band_hz": null,
+      "mp3": "static/audio/examples/underwater_target.mp3",
+      "spectrogram": "static/images/examples/underwater_target.png",
+      "mp3_kb": 24.0
+    }
+  }
+}
